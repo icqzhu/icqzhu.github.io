@@ -10,9 +10,11 @@ const fallbackProfile = {
   affiliation: "P.R. China",
   avatar: "assets/profile.png",
   email: "icqzhu@gmail.com",
+  google_scholar: "https://scholar.google.com/citations?user=M6JBBRIAAAAJ&hl=en",
   orcid: "https://orcid.org/0009-0007-1542-9888",
+  wos: "https://www.webofscience.com/wos/author/record/PEX-5311-2025",
   pubmed: "https://www.ncbi.nlm.nih.gov/pubmed/?term=zhu+ruolin",
-  github: "",
+  github: "https://github.com/icqzhu/",
   cv: "",
   interests: ["Clinical Medicine", "Evidence & Publications", "Academic Collaboration"],
   about:
@@ -21,13 +23,50 @@ const fallbackProfile = {
 
 const fallbackPublications = [
   {
-    title: "Paper Title Number 4",
+    title:
+      "Parallel microevolution of multidrug resistance and hypermucoviscosity in two carbapenem-resistant Pseudomonas aeruginosa clinical isolates with strikingly divergent virulence outcomes",
     year: "2024",
-    authors: "Ruolin Zhu",
+    authors:
+      "Yang, Rui*; Zhu, Ruolin*; Lai, Chunmiao*; Zeng, Jie*; Zheng, Anran; Chen, Pinjia; Chen, Xiaoying; Tian, Xiaoxin; Wang, Xin; Feng, Shengjun et al.",
     venue: "GitHub Journal of Bugs",
+    category: "First/Co-First Author",
     tags: "Template, Replace me",
-    summary: "Template entry from the source site, ready to replace with final citation details.",
-    links: "PDF: assets/papers/paper3.pdf",
+    summary:
+      "Template entry from the reference site. Replace this block with a real citation, abstract, and links.",
+    links: "DOI|https://doi.org/10.1186/s12866-025-04703-z, PubMed|https://pubmed.ncbi.nlm.nih.gov/41593470/, PubMed Central|https://pmc.ncbi.nlm.nih.gov/articles/PMC12973579/",
+  },
+  {
+    title: "Paper Title Number 3",
+    year: "2015",
+    authors: "Ruolin Zhu",
+    venue: "Journal 1",
+    category: "Corresponding Author",
+    tags: "Template",
+    summary: "This paper is about the number 3. The number 4 is left for future work.",
+    links:
+      "DOI|https://doi.org/example, PubMed|https://pubmed.ncbi.nlm.nih.gov/, Google Scholar|https://scholar.google.com/scholar?q=Ruolin+Zhu, Web of Science|https://www.webofscience.com/wos/author/record/PEX-5311-2025",
+  },
+  {
+    title: "Paper Title Number 2",
+    year: "2010",
+    authors: "Ruolin Zhu",
+    venue: "Journal 1",
+    category: "Others",
+    tags: "Template",
+    summary: "This paper is about the number 2. The number 3 is left for future work.",
+    links:
+      "DOI|https://doi.org/example, PubMed|https://pubmed.ncbi.nlm.nih.gov/, Google Scholar|https://scholar.google.com/scholar?q=Ruolin+Zhu, Web of Science|https://www.webofscience.com/wos/author/record/PEX-5311-2025",
+  },
+  {
+    title: "Paper Title Number 1",
+    year: "2009",
+    authors: "Ruolin Zhu",
+    venue: "Journal 1",
+    category: "Others",
+    tags: "Template",
+    summary: "This paper is about the number 1. The number 2 is left for future work.",
+    links:
+      "DOI|https://doi.org/example, PubMed|https://pubmed.ncbi.nlm.nih.gov/, Google Scholar|https://scholar.google.com/scholar?q=Ruolin+Zhu, Web of Science|https://www.webofscience.com/wos/author/record/PEX-5311-2025",
   },
 ];
 
@@ -39,8 +78,8 @@ const fallbackServices = [
 ];
 
 document.querySelector("#year").textContent = new Date().getFullYear();
-document.querySelector(".icon-button").addEventListener("click", () => window.print());
 
+initThemeToggle();
 initNavigation();
 loadContent();
 
@@ -65,7 +104,7 @@ async function fetchText(path) {
     const response = await fetch(path, { cache: "no-store" });
     return response.ok ? response.text() : "";
   } catch (error) {
-    console.warn(`Could not load ${path}. Run a local server to load Markdown content.`, error);
+    console.warn(`Could not load ${path}. Using the built-in page content instead.`, error);
     return "";
   }
 }
@@ -203,10 +242,10 @@ function renderProfile(profile) {
 
   const linkMap = {
     email: profile.email ? `mailto:${profile.email}` : "",
+    google_scholar: profile.google_scholar,
     orcid: profile.orcid,
-    pubmed: profile.pubmed,
+    wos: profile.wos,
     github: profile.github,
-    cv: profile.cv,
   };
 
   Object.entries(linkMap).forEach(([key, href]) => {
@@ -216,6 +255,8 @@ function renderProfile(profile) {
     }
     link.href = href || "#";
     link.classList.toggle("is-hidden", !href);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
   });
 
   document.querySelector("#about-content").innerHTML =
@@ -223,44 +264,77 @@ function renderProfile(profile) {
   document.querySelector("#interest-list").innerHTML = profile.interests
     .map((interest) => `<li>${escapeHtml(interest)}</li>`)
     .join("");
-  document.querySelector("#quick-links").innerHTML = buildQuickLinks(profile);
-}
-
-function buildQuickLinks(profile) {
-  const links = [
-    profile.email && { label: "Email", href: `mailto:${profile.email}` },
-    profile.orcid && { label: "ORCID", href: profile.orcid },
-    profile.pubmed && { label: "PubMed", href: profile.pubmed },
-    profile.github && { label: "GitHub", href: profile.github },
-    profile.cv && { label: "Download CV", href: profile.cv },
-  ].filter(Boolean);
-
-  return links.map((link) => `<li><a href="${link.href}">${link.label}</a></li>`).join("");
 }
 
 function renderPublications(publications) {
-  document.querySelector("#publication-list").innerHTML = publications
-    .sort((a, b) => Number(b.year || 0) - Number(a.year || 0))
-    .map((publication) => {
-      const tags = splitComma(publication.tags)
-        .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
-        .join("");
-      const links = parseLinks(publication.links)
-        .map((link) => `<a href="${link.href}">${escapeHtml(link.label)}</a>`)
-        .join("");
+  const sortedPublications = [...publications].sort(
+    (a, b) => Number(b.year || 0) - Number(a.year || 0),
+  );
 
-      return `
-        <article class="publication-card glass">
-          <h3>${escapeHtml(publication.title || "Untitled publication")}</h3>
-          <p class="authors">${highlightName(publication.authors || "")}</p>
-          <p class="venue">${escapeHtml(publication.venue || "")}</p>
-          <div class="summary">${publication.summary || ""}</div>
-          <div class="publication-meta">${tags}</div>
-          <div class="publication-links">${links}</div>
-        </article>
-      `;
-    })
+  const groups = publicationGroups.map((group) => ({
+    ...group,
+    items: sortedPublications.filter((publication) => getPublicationGroup(publication) === group.key),
+  }));
+
+  document.querySelector("#publication-list").innerHTML = groups
+    .map(
+      (group) => `
+        <section class="publication-group" aria-labelledby="publication-group-${group.key}">
+          <h3 id="publication-group-${group.key}">${group.label}</h3>
+          <div class="publication-group-list">
+            ${
+              group.items.length
+                ? group.items.map((publication) => buildPublicationCard(publication)).join("")
+                : '<p class="empty-publication-group">No publications listed yet.</p>'
+            }
+          </div>
+        </section>
+      `,
+    )
     .join("");
+}
+
+const publicationGroups = [
+  { key: "first", label: "First/Co-First Author" },
+  { key: "corresponding", label: "Corresponding Author" },
+  { key: "others", label: "Others" },
+];
+
+function buildPublicationCard(publication) {
+  const tags = splitComma(publication.tags)
+    .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+    .join("");
+  const links = parseLinks(publication.links)
+    .map(
+      (link) =>
+        `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
+    )
+    .join("");
+
+  return `
+    <article class="publication-card glass">
+      <h4>${escapeHtml(publication.title || "Untitled publication")}</h4>
+      <p class="authors">${highlightName(publication.authors || "")}</p>
+      <p class="venue">${escapeHtml(publication.venue || "")}</p>
+      <div class="summary">${publication.summary || ""}</div>
+      ${tags ? `<div class="publication-meta">${tags}</div>` : ""}
+      ${links ? `<div class="publication-links">${links}</div>` : ""}
+    </article>
+  `;
+}
+
+function getPublicationGroup(publication) {
+  const category = `${publication.category || publication.type || publication.tags || ""}`.toLowerCase();
+
+  if (category.includes("corresponding")) {
+    return "corresponding";
+  }
+
+  if (category.includes("first") || category.includes("co-first") || category.includes("cofirst")) {
+    return "first";
+  }
+
+  return "others";
 }
 
 function renderServices(services) {
@@ -299,6 +373,33 @@ function parseLinks(value = "") {
 
 function highlightName(authors) {
   return escapeHtml(authors).replace(/Ruolin Zhu/g, "<strong>Ruolin Zhu</strong>");
+}
+
+function initThemeToggle() {
+  const toggle = document.querySelector("[data-theme-toggle]");
+  if (!toggle) {
+    return;
+  }
+
+  const applyTheme = (theme) => {
+    const isDark = theme === "dark";
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem("theme", theme);
+    } catch (error) {
+      console.warn("Could not save the selected theme.", error);
+    }
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    toggle.title = isDark ? "Switch to light mode" : "Switch to dark mode";
+  };
+
+  applyTheme(document.documentElement.dataset.theme || "light");
+
+  toggle.addEventListener("click", () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+  });
 }
 
 function initNavigation() {

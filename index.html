@@ -8,6 +8,18 @@
       name="description"
       content="Ruolin Zhu's academic homepage, including profile, research interests, publications, services, and curriculum vitae."
     />
+    <script>
+      (() => {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const fallbackTheme = prefersDark ? "dark" : "light";
+
+        try {
+          document.documentElement.dataset.theme = localStorage.getItem("theme") || fallbackTheme;
+        } catch (error) {
+          document.documentElement.dataset.theme = fallbackTheme;
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
@@ -23,12 +35,24 @@
         <a href="#services">Services</a>
       </nav>
       <div class="header-tools" aria-label="Display tools">
-        <div class="language-switch" aria-label="Language switch">
-          <button class="active" type="button">EN</button>
-          <button type="button">中文</button>
-        </div>
-        <button class="icon-button" type="button" aria-label="Print CV" title="Print CV">
-          <span aria-hidden="true">▢</span>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" title="Switch theme">
+          <span class="theme-toggle-track" aria-hidden="true">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24">
+              <path d="M12 4V2" />
+              <path d="M12 22v-2" />
+              <path d="m4.93 4.93 1.41 1.41" />
+              <path d="m17.66 17.66 1.41 1.41" />
+              <path d="M4 12H2" />
+              <path d="M22 12h-2" />
+              <path d="m6.34 17.66-1.41 1.41" />
+              <path d="m19.07 4.93-1.41 1.41" />
+              <circle cx="12" cy="12" r="4" />
+            </svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24">
+              <path d="M20 14.6A7.8 7.8 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6z" />
+            </svg>
+            <span class="theme-toggle-thumb"></span>
+          </span>
         </button>
       </div>
     </header>
@@ -36,26 +60,35 @@
     <main class="layout">
       <aside class="sidebar" aria-label="Profile sidebar">
         <section class="identity-card glass">
-          <img class="avatar" data-profile="avatar" src="assets/profile.png" alt="Portrait of Ruolin Zhu" />
+          <img class="avatar" data-profile="avatar" src="assets/yuanyuan.jpg" alt="Portrait of Ruolin Zhu" />
           <h1 data-profile="name">Ruolin Zhu</h1>
           <p class="role" data-profile="role">Clinical Medicine</p>
           <p class="affiliation" data-profile="affiliation">P.R. China</p>
 
           <div class="social-row" aria-label="Academic links">
-            <a data-link="email" href="mailto:icqzhu@gmail.com" aria-label="Email" title="Email">
-              <span aria-hidden="true">✉</span>
+            <a data-link="email" href="mailto:icqzhu@gmail.com" aria-label="Email" title="Email" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4.75 6.75h14.5v10.5H4.75z" />
+                <path d="m5.25 7.25 6.75 5.5 6.75-5.5" />
+              </svg>
             </a>
-            <a data-link="orcid" href="https://orcid.org/0009-0007-1542-9888" aria-label="ORCID" title="ORCID">
+            <a data-link="google_scholar" href="https://scholar.google.com/citations?user=M6JBBRIAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 4.25 3.75 9 12 13.75 20.25 9 12 4.25z" />
+                <path d="M7 11.25v4.15c0 1.45 2.25 2.6 5 2.6s5-1.15 5-2.6v-4.15" />
+              </svg>
+            </a>
+            <a data-link="orcid" href="https://orcid.org/0009-0007-1542-9888" aria-label="ORCID" title="ORCID" target="_blank" rel="noopener noreferrer">
               <span aria-hidden="true">iD</span>
             </a>
-            <a data-link="pubmed" href="https://www.ncbi.nlm.nih.gov/pubmed/?term=zhu+ruolin" aria-label="PubMed" title="PubMed">
-              <span aria-hidden="true">P</span>
+            <a data-link="wos" href="https://www.webofscience.com/wos/author/record/PEX-5311-2025" aria-label="Web of Science" title="Web of Science" target="_blank" rel="noopener noreferrer">
+              <span aria-hidden="true">WoS</span>
             </a>
-            <a data-link="github" href="#" aria-label="GitHub" title="GitHub">
-              <span aria-hidden="true">{ }</span>
-            </a>
-            <a data-link="cv" href="#" aria-label="CV" title="CV">
-              <span aria-hidden="true">CV</span>
+            <a data-link="github" href="https://github.com/icqzhu/" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M9 19c-4 1.25-4-2-5.6-2.25" />
+                <path d="M15 21v-3.45c.05-.65-.2-1.3-.7-1.75 2.35-.25 4.8-1.15 4.8-5.15a4.05 4.05 0 0 0-1.1-2.8 3.75 3.75 0 0 0-.1-2.8s-.9-.3-2.9 1.1a9.9 9.9 0 0 0-5.3 0c-2-1.4-2.9-1.1-2.9-1.1a3.75 3.75 0 0 0-.1 2.8 4.05 4.05 0 0 0-1.1 2.85c0 3.95 2.45 4.85 4.8 5.1-.45.4-.75 1.1-.7 1.75V21" />
+              </svg>
             </a>
           </div>
         </section>
@@ -72,16 +105,6 @@
           </ul>
         </section>
 
-        <section class="mini-card glass">
-          <div class="mini-card-head">
-            <h2>Quick Links</h2>
-          </div>
-          <ul id="quick-links">
-            <li><a href="mailto:icqzhu@gmail.com">Email</a></li>
-            <li><a href="https://orcid.org/0009-0007-1542-9888">ORCID</a></li>
-            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=zhu+ruolin">PubMed</a></li>
-          </ul>
-        </section>
       </aside>
 
       <section class="content">
@@ -99,7 +122,6 @@
         <section class="panel" id="publications" aria-labelledby="publications-title">
           <div class="section-title-row">
             <h2 id="publications-title">Selected Publications</h2>
-            <a href="content/publications.md">Edit Markdown →</a>
           </div>
           <div class="publication-list" id="publication-list" aria-live="polite">
             <article class="publication-card glass">
@@ -111,7 +133,6 @@
         <section class="panel" id="services" aria-labelledby="services-title">
           <div class="section-title-row">
             <h2 id="services-title">Services</h2>
-            <a href="content/services.md">Edit Markdown →</a>
           </div>
           <div class="service-grid" id="service-list">
             <article class="service-card glass">
@@ -124,7 +145,7 @@
     </main>
 
     <footer class="site-footer">
-      <span>© <span id="year"></span> <span data-profile="name">Ruolin Zhu</span></span>
+      <span>&copy; <span id="year"></span> <span data-profile="name">Ruolin Zhu</span></span>
       <span>Powered by editable Markdown content.</span>
     </footer>
 
