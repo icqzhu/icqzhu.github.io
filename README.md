@@ -12,6 +12,10 @@ node scripts/serve.js 8000
 
 Then visit `http://localhost:8000`.
 
+## GitHub Pages
+
+This site reads Markdown files directly from the `content/` folder in the browser. Keep the root `.nojekyll` file in the repository so GitHub Pages publishes those Markdown files as static assets instead of processing them with Jekyll.
+
 ## How to Edit Content
 
 - `content/profile.md`: Name, position, institution, avatar, email, Google Scholar, ORCID, Web of Science, GitHub, About, and Research Interests.
