@@ -1,26 +1,26 @@
 # Academic Homepage
 
-这是一个轻量、可编辑的个人学术主页。页面视觉参考了你给的示例图：左侧个人信息栏，右侧 About、Selected Publications 和 Services，并加入了 Glassmorphism、liquid glass 背景和 hover 动效。
+A lightweight and editable personal academic homepage. The page layout follows your reference design: personal information sidebar on the left, and About, Selected Publications, and Services on the right, with Glassmorphism, liquid glass background, and hover effects.
 
-## 预览
+## Preview
 
-因为页面会自动读取 `content/*.md`，请通过本地服务器预览，而不是直接双击打开 HTML。
+Since the page automatically reads `content/*.md`, please preview through a local server rather than directly opening the HTML file.
 
 ```bash
 node scripts/serve.js 8000
 ```
 
-然后访问 `http://localhost:8000`。
+Then visit `http://localhost:8000`.
 
-## 如何编辑内容
+## How to Edit Content
 
-- `content/profile.md`: 姓名、职位、单位、头像、邮箱、ORCID、PubMed、About 和 Research Interests。
-- `content/publications.md`: 论文列表。复制一个 `--- ... ---` 论文块并修改字段即可新增论文。
-- `content/services.md`: 教学、报告、学术服务等条目。
-- `assets/profile.png`: 头像图片。
-- `assets/papers/`: 论文 PDF。
+- `content/profile.md`: Name, position, institution, avatar, email, ORCID, PubMed, About, and Research Interests.
+- `content/publications.md`: Paper list. Copy a `--- ... ---` paper block and modify the fields to add new papers.
+- `content/services.md`: Teaching, talks, academic service entries, etc.
+- `assets/profile.png`: Profile picture.
+- `assets/papers/`: Paper PDFs.
 
-## 论文条目格式
+## Paper Entry Format
 
 ```markdown
 ---
@@ -35,4 +35,4 @@ links: PDF|assets/papers/paper.pdf, DOI|https://doi.org/example
 One or two sentences describing this paper.
 ```
 
-保存后刷新页面，网站会自动重新排版展示。
+After saving, refresh the page and the website will automatically reformat and display the content.
