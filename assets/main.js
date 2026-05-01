@@ -528,28 +528,54 @@ function initThemeToggle() {
 function initNavigation() {
   const navLinks = Array.from(document.querySelectorAll(".nav a"));
   const sections = navLinks
-    .map((link) => document.querySelector(link.getAttribute("href")))
-    .filter(Boolean);
+    .map((link) => ({
+      link,
+      section: document.querySelector(link.getAttribute("href")),
+    }))
+    .filter((item) => item.section);
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (!sections.length) {
+    return;
+  }
 
-      if (!visible) {
-        return;
-      }
+  const setActiveLink = (activeLink) => {
+    navLinks.forEach((link) => {
+      link.classList.toggle("active", link === activeLink);
+    });
+  };
 
-      navLinks.forEach((link) => {
-        link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
-      });
-    },
-    {
-      rootMargin: "-20% 0px -58% 0px",
-      threshold: [0.1, 0.3, 0.6],
-    },
-  );
+  const updateActiveLink = () => {
+    const headerHeight = document.querySelector(".site-header")?.offsetHeight || 0;
+    const referenceY = headerHeight + window.innerHeight * 0.45;
+    const nearPageBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 6;
 
-  sections.forEach((section) => observer.observe(section));
+    if (nearPageBottom) {
+      setActiveLink(sections[sections.length - 1].link);
+      return;
+    }
+
+    const current = sections.reduce((active, item) => {
+      const top = item.section.getBoundingClientRect().top;
+      return top <= referenceY ? item : active;
+    }, sections[0]);
+
+    setActiveLink(current.link);
+  };
+
+  let ticking = false;
+  const requestUpdate = () => {
+    if (ticking) {
+      return;
+    }
+
+    ticking = true;
+    requestAnimationFrame(() => {
+      updateActiveLink();
+      ticking = false;
+    });
+  };
+
+  updateActiveLink();
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
 }
