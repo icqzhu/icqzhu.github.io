@@ -100,8 +100,6 @@ const fallbackTalksInternships = [
   },
 ];
 
-document.querySelector("#year").textContent = new Date().getFullYear();
-
 initThemeToggle();
 initNavigation();
 loadContent();
@@ -138,11 +136,16 @@ async function loadContent() {
 async function fetchText(path) {
   try {
     const response = await fetch(path, { cache: "no-store" });
-    return response.ok ? response.text() : "";
+    const text = response.ok ? await response.text() : "";
+    return normalizeLineEndings(text);
   } catch (error) {
     console.warn(`Could not load ${path}. Using the built-in page content instead.`, error);
     return "";
   }
+}
+
+function normalizeLineEndings(text) {
+  return text.replace(/\r\n?/g, "\n");
 }
 
 function parseProfile(markdown) {
@@ -360,8 +363,14 @@ function buildPublicationCard(publication) {
       <p class="authors">${highlightName(publication.authors || "")}</p>
       <p class="venue">${escapeHtml(publication.venue || "")}</p>
       <div class="summary">${publication.summary || ""}</div>
-      ${tags ? `<div class="publication-meta">${tags}</div>` : ""}
-      ${links ? `<div class="publication-links">${links}</div>` : ""}
+      ${
+        tags || links
+          ? `<div class="publication-actions">
+              ${tags ? `<div class="publication-meta">${tags}</div>` : ""}
+              ${links ? `<div class="publication-links">${links}</div>` : ""}
+            </div>`
+          : ""
+      }
     </article>
   `;
 }

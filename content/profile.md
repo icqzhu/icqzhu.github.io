@@ -21,6 +21,6 @@ I welcome research discussions and collaborations. Please get in touch by email.
 ## Research Interests
 
 - Bacterial Resistance
-- Protein structure & Function
+- Protein Structure & Function
 - Evolutionary Mechanism
 - AI for Science
