@@ -1,0 +1,4 @@
+- Diagnosis and treatment of various common respiratory diseases
+- Analysis of bacterial whole genome and multi-omics
+- Analyzing drug resistance using molecular docking and MD simulations
+- Molecular biological experiments studying bacterial function

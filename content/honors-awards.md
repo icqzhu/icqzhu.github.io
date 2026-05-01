@@ -1,17 +1,22 @@
----
-title: Example Award
-year: 2026
-institution: Awarding Institution
-type: Honor
----
-
-Add a short description of the award, scholarship, recognition, or distinction here.
+# honors & awards
 
 ---
-title: Example Scholarship
-year: 2025
-institution: University or Organization
-type: Scholarship
+title: The 2024 ICPC Asia Hong Kong Regional Contest
+year: 
+institution: 
+type: 135th
 ---
 
-Add the scholarship details here.
+---
+title: The 2023 ICPC Asia Macau Regional Contest
+year: 
+institution: 
+type: Honorable Mention
+---
+
+---
+title: The 16th Lanqiao Cup Software Competition (C/C++ Group)
+year: 
+institution: 
+type: First Prize
+---

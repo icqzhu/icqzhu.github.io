@@ -1,5 +1,6 @@
 const contentPaths = {
   profile: "content/profile.md",
+  skillsExpertise: "content/skills-expertise.md",
   publications: "content/publications.md",
   honorsAwards: "content/honors-awards.md",
   educationTalksInternships: "content/education-talks-internships.md",
@@ -78,6 +79,13 @@ const fallbackHonorsAwards = [
   },
 ];
 
+const fallbackSkillsExpertise = [
+  "Clinical Medicine",
+  "Evidence-Based Medicine",
+  "Clinical Research",
+  "Academic Writing",
+];
+
 const fallbackEducations = [
   {
     title: "Education",
@@ -99,14 +107,16 @@ initNavigation();
 loadContent();
 
 async function loadContent() {
-  const [profileText, publicationText, honorsText, educationTalksInternshipsText] = await Promise.all([
+  const [profileText, skillsText, publicationText, honorsText, educationTalksInternshipsText] = await Promise.all([
     fetchText(contentPaths.profile),
+    fetchText(contentPaths.skillsExpertise),
     fetchText(contentPaths.publications),
     fetchText(contentPaths.honorsAwards),
     fetchText(contentPaths.educationTalksInternships),
   ]);
 
   const profile = profileText ? parseProfile(profileText) : fallbackProfile;
+  const skillsExpertise = skillsText ? markdownListToArray(stripFrontMatter(skillsText)) : fallbackSkillsExpertise;
   const publications = publicationText ? parseEntries(publicationText) : fallbackPublications;
   const honorsAwards = honorsText ? parseEntries(honorsText) : fallbackHonorsAwards;
   const educationTalksInternships = educationTalksInternshipsText
@@ -114,8 +124,9 @@ async function loadContent() {
     : [...fallbackEducations, ...fallbackTalksInternships];
 
   renderProfile({ ...fallbackProfile, ...profile });
+  renderSkillList("#skills-expertise-list", skillsExpertise.length ? skillsExpertise : fallbackSkillsExpertise);
   renderPublications(publications.length ? publications : fallbackPublications);
-  renderEntries("#honors-awards-list", honorsAwards.length ? honorsAwards : fallbackHonorsAwards);
+  renderResumeList("#honors-awards-list", honorsAwards.length ? honorsAwards : fallbackHonorsAwards);
   renderResumeList(
     "#education-talks-internships-list",
     educationTalksInternships.length
@@ -136,7 +147,7 @@ async function fetchText(path) {
 
 function parseProfile(markdown) {
   const frontMatter = readFrontMatter(markdown);
-  const body = markdown.replace(/^---\r?\n[\s\S]*?\r?\n---/, "").trim();
+  const body = stripFrontMatter(markdown);
   const sections = splitSections(body);
   const about = sections.About || body;
   const interests = markdownListToArray(sections["Research Interests"] || "");
@@ -146,6 +157,10 @@ function parseProfile(markdown) {
     interests,
     about: markdownToHtml(about),
   };
+}
+
+function stripFrontMatter(markdown) {
+  return markdown.replace(/^---\r?\n[\s\S]*?\r?\n---/, "").trim();
 }
 
 function parseEntries(markdown) {
@@ -391,12 +406,19 @@ function renderEntries(selector, entries) {
     .join("");
 }
 
+function renderSkillList(selector, skills) {
+  document.querySelector(selector).innerHTML = skills
+    .map((skill) => `<li>${escapeHtml(skill)}</li>`)
+    .join("");
+}
+
 function renderResumeList(selector, entries) {
   document.querySelector(selector).innerHTML = entries
     .sort((a, b) => getSortYear(b) - getSortYear(a))
     .map((entry) => {
       const period = entry.period || entry.date || entry.year || "";
       const place = entry.institution || entry.organization || entry.venue || "";
+      const rank = entry.rank || entry.type || "";
       const description = entry.description || entry.title || stripHtml(entry.summary || "");
       const parts = [period, place, description].filter(Boolean);
       const links = parseLinks(entry.links)
@@ -409,6 +431,7 @@ function renderResumeList(selector, entries) {
       return `
         <li>
           <span>${parts.map((part) => escapeHtml(part)).join(", ")}</span>
+          ${rank ? `<span class="resume-rank">${escapeHtml(rank)}</span>` : ""}
           ${links ? `<span class="resume-links">${links}</span>` : ""}
         </li>
       `;

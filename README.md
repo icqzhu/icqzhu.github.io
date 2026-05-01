@@ -19,6 +19,7 @@ This site reads Markdown files directly from the `content/` folder in the browse
 ## How to Edit Content
 
 - `content/profile.md`: Name, position, institution, avatar, email, Google Scholar, ORCID, Web of Science, GitHub, About, and Research Interests.
+- `content/skills-expertise.md`: Skills and expertise. Each bullet becomes one displayed item.
 - `content/publications.md`: Publications. Copy a `--- ... ---` paper block and modify the fields to add new papers.
 - `content/honors-awards.md`: Honors, awards, scholarships, and distinctions.
 - `content/education-talks-internships.md`: Education, talks, presentations, internships, visiting experiences, and exchanges.

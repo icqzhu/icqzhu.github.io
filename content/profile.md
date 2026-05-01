@@ -14,15 +14,13 @@ cv:
 
 ## About
 
-I am building an academic profile in **clinical medicine**. This homepage is adapted from the content in `icqzhu.github.io` and designed so personal academic content can be edited in Markdown.
-
-Add your current position, education background, advisors, research focus, representative achievements, and collaboration interests here.
+I focuses on solving life science and medical problems through various research methods.
 
 I welcome research discussions and collaborations. Please get in touch by email.
 
 ## Research Interests
 
-- Clinical Medicine
-- Evidence & Publications
-- Academic Collaboration
-- Translational Research
+- Bacterial Resistance
+- Protein structure & Function
+- Evolutionary Mechanism
+- AI for Science
