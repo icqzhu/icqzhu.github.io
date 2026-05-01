@@ -1,7 +1,8 @@
 const contentPaths = {
   profile: "content/profile.md",
   publications: "content/publications.md",
-  services: "content/services.md",
+  honorsAwards: "content/honors-awards.md",
+  educationTalksInternships: "content/education-talks-internships.md",
 };
 
 const fallbackProfile = {
@@ -70,10 +71,24 @@ const fallbackPublications = [
   },
 ];
 
-const fallbackServices = [
+const fallbackHonorsAwards = [
   {
-    title: "Academic Service",
-    summary: "Add reviewing, committee service, teaching, awards, and collaborations in content/services.md.",
+    title: "Honors & Awards",
+    summary: "Add awards, scholarships, recognitions, and distinctions in content/honors-awards.md.",
+  },
+];
+
+const fallbackEducations = [
+  {
+    title: "Education",
+    summary: "Add degrees, institutions, advisors, talks, internships, and visiting experiences in content/education-talks-internships.md.",
+  },
+];
+
+const fallbackTalksInternships = [
+  {
+    title: "Talks & Internships",
+    summary: "Add invited talks, conference presentations, internships, and visiting experiences in content/education-talks-internships.md.",
   },
 ];
 
@@ -84,19 +99,29 @@ initNavigation();
 loadContent();
 
 async function loadContent() {
-  const [profileText, publicationText, serviceText] = await Promise.all([
+  const [profileText, publicationText, honorsText, educationTalksInternshipsText] = await Promise.all([
     fetchText(contentPaths.profile),
     fetchText(contentPaths.publications),
-    fetchText(contentPaths.services),
+    fetchText(contentPaths.honorsAwards),
+    fetchText(contentPaths.educationTalksInternships),
   ]);
 
   const profile = profileText ? parseProfile(profileText) : fallbackProfile;
   const publications = publicationText ? parseEntries(publicationText) : fallbackPublications;
-  const services = serviceText ? parseEntries(serviceText) : fallbackServices;
+  const honorsAwards = honorsText ? parseEntries(honorsText) : fallbackHonorsAwards;
+  const educationTalksInternships = educationTalksInternshipsText
+    ? parseEntries(educationTalksInternshipsText)
+    : [...fallbackEducations, ...fallbackTalksInternships];
 
   renderProfile({ ...fallbackProfile, ...profile });
   renderPublications(publications.length ? publications : fallbackPublications);
-  renderServices(services.length ? services : fallbackServices);
+  renderEntries("#honors-awards-list", honorsAwards.length ? honorsAwards : fallbackHonorsAwards);
+  renderResumeList(
+    "#education-talks-internships-list",
+    educationTalksInternships.length
+      ? educationTalksInternships
+      : [...fallbackEducations, ...fallbackTalksInternships],
+  );
 }
 
 async function fetchText(path) {
@@ -111,7 +136,7 @@ async function fetchText(path) {
 
 function parseProfile(markdown) {
   const frontMatter = readFrontMatter(markdown);
-  const body = markdown.replace(/^---[\s\S]*?---/, "").trim();
+  const body = markdown.replace(/^---\r?\n[\s\S]*?\r?\n---/, "").trim();
   const sections = splitSections(body);
   const about = sections.About || body;
   const interests = markdownListToArray(sections["Research Interests"] || "");
@@ -125,7 +150,7 @@ function parseProfile(markdown) {
 
 function parseEntries(markdown) {
   const entries = [];
-  const pattern = /---\n([\s\S]*?)\n---\n([\s\S]*?)(?=\n---\n|$)/g;
+  const pattern = /---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*?)(?=\r?\n---\r?\n|$)/g;
   let match = pattern.exec(markdown);
 
   while (match) {
@@ -142,7 +167,7 @@ function parseEntries(markdown) {
 }
 
 function readFrontMatter(markdown) {
-  const match = markdown.match(/^---\n([\s\S]*?)\n---/);
+  const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) {
     return {};
   }
@@ -267,9 +292,9 @@ function renderProfile(profile) {
 }
 
 function renderPublications(publications) {
-  const sortedPublications = [...publications].sort(
-    (a, b) => Number(b.year || 0) - Number(a.year || 0),
-  );
+  const sortedPublications = [...publications]
+    .filter((publication) => !hasTemplateTag(publication))
+    .sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
 
   const groups = publicationGroups.map((group) => ({
     ...group,
@@ -295,7 +320,7 @@ function renderPublications(publications) {
 }
 
 const publicationGroups = [
-  { key: "first", label: "First/Co-First Author" },
+  { key: "first", label: "First/Co-First* Author" },
   { key: "corresponding", label: "Corresponding Author" },
   { key: "others", label: "Others" },
 ];
@@ -313,7 +338,7 @@ function buildPublicationCard(publication) {
 
   return `
     <article class="publication-card glass">
-      <h4>${escapeHtml(publication.title || "Untitled publication")}</h4>
+      <h4>${publicationTitleToHtml(publication.title || "Untitled publication")}</h4>
       <p class="authors">${highlightName(publication.authors || "")}</p>
       <p class="venue">${escapeHtml(publication.venue || "")}</p>
       <div class="summary">${publication.summary || ""}</div>
@@ -337,15 +362,76 @@ function getPublicationGroup(publication) {
   return "others";
 }
 
-function renderServices(services) {
-  document.querySelector("#service-list").innerHTML = services
-    .map((service) => `
-      <article class="service-card glass">
-        <h3>${escapeHtml(service.title || "Service")}</h3>
-        <p>${escapeHtml(service.summary || "")}</p>
+function renderEntries(selector, entries) {
+  document.querySelector(selector).innerHTML = entries
+    .sort((a, b) => Number(b.year || 0) - Number(a.year || 0))
+    .map((entry) => {
+      const summary = entry.summary || "";
+      const summaryHtml = /<[a-z][\s\S]*>/i.test(summary) ? summary : markdownToHtml(summary);
+      const meta = [entry.year, entry.institution, entry.location, entry.type]
+        .filter(Boolean)
+        .map((item) => `<span class="tag">${escapeHtml(item)}</span>`)
+        .join("");
+      const links = parseLinks(entry.links)
+        .map(
+          (link) =>
+            `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
+        )
+        .join("");
+
+      return `
+      <article class="entry-card glass">
+        <h3>${escapeHtml(entry.title || "Entry")}</h3>
+        ${meta ? `<div class="publication-meta">${meta}</div>` : ""}
+        <div class="summary">${summaryHtml}</div>
+        ${links ? `<div class="publication-links">${links}</div>` : ""}
       </article>
-    `)
+    `;
+    })
     .join("");
+}
+
+function renderResumeList(selector, entries) {
+  document.querySelector(selector).innerHTML = entries
+    .sort((a, b) => getSortYear(b) - getSortYear(a))
+    .map((entry) => {
+      const period = entry.period || entry.date || entry.year || "";
+      const place = entry.institution || entry.organization || entry.venue || "";
+      const description = entry.description || entry.title || stripHtml(entry.summary || "");
+      const parts = [period, place, description].filter(Boolean);
+      const links = parseLinks(entry.links)
+        .map(
+          (link) =>
+            `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
+        )
+        .join("");
+
+      return `
+        <li>
+          <span>${parts.map((part) => escapeHtml(part)).join(", ")}</span>
+          ${links ? `<span class="resume-links">${links}</span>` : ""}
+        </li>
+      `;
+    })
+    .join("");
+}
+
+function getSortYear(entry) {
+  const value = `${entry.period || entry.date || entry.year || ""}`;
+  const years = value.match(/\d{4}/g);
+  return years ? Number(years[years.length - 1]) : 0;
+}
+
+function stripHtml(value) {
+  return value.replace(/<[^>]*>/g, "").trim();
+}
+
+function hasTemplateTag(publication) {
+  return splitComma(publication.tags).some((tag) => tag.toLowerCase() === "template");
+}
+
+function publicationTitleToHtml(title) {
+  return escapeHtml(title).replace(/\*([^*]+)\*/g, "<em>$1</em>");
 }
 
 function setText(selector, value) {
@@ -372,7 +458,9 @@ function parseLinks(value = "") {
 }
 
 function highlightName(authors) {
-  return escapeHtml(authors).replace(/Ruolin Zhu/g, "<strong>Ruolin Zhu</strong>");
+  return escapeHtml(authors)
+    .replace(/\bet al\.?\b/g, "<em>$&</em>")
+    .replace(/Ruolin Zhu/g, "<strong>Ruolin Zhu</strong>");
 }
 
 function initThemeToggle() {
