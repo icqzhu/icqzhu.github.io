@@ -40,6 +40,8 @@
   --theme-thumb: #ffffff;
   --theme-icon: #43536a;
   --max: 1240px;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-serif: Charter, "Iowan Old Style", Georgia, "Times New Roman", serif;
 }
 
 [data-theme="dark"] {
@@ -96,10 +98,8 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Arial, sans-serif;
-  line-height: 1.72;
+  font-family: var(--font-sans);
+  line-height: 1.65;
   background: var(--page-bg);
   overflow-x: hidden;
   transition:
@@ -224,9 +224,9 @@ a:hover {
 
 .brand {
   color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: clamp(1.7rem, 3vw, 2rem);
-  font-weight: 760;
+  font-weight: 700;
   letter-spacing: 0;
   margin-left: 2px;
   transition: color 180ms ease;
@@ -254,7 +254,7 @@ a:hover {
   white-space: nowrap;
   color: var(--nav-text);
   font-size: 0.95rem;
-  font-weight: 720;
+  font-weight: 620;
   transition:
     transform 180ms ease,
     background 180ms ease,
@@ -415,9 +415,10 @@ a:hover {
 
 .identity-card h1 {
   margin: 26px 18px 4px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: clamp(2rem, 4vw, 2.4rem);
   line-height: 1.05;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
@@ -430,7 +431,7 @@ a:hover {
 .role {
   color: var(--accent-dark);
   font-size: 1.08rem;
-  font-weight: 760;
+  font-weight: 650;
 }
 
 .affiliation {
@@ -455,7 +456,7 @@ a:hover {
   color: var(--theme-icon);
   background: var(--social-bg);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   transition:
     transform 180ms ease,
@@ -499,16 +500,25 @@ a:hover {
 }
 
 .social-row a[data-link="wos"] {
-  color: #4f46e5;
+  color: #2f74c0;
 }
 
 .social-row a[data-link="wos"] .ai {
   font-size: 21px;
+  color: transparent;
+  background: linear-gradient(135deg, #2f74c0 0 34%, #36a852 34% 66%, #f2b63d 66% 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
 .social-row a[data-link="github"] img {
   width: 19px;
   height: 19px;
+}
+
+[data-theme="dark"] .social-row a[data-link="github"] img {
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
 }
 
 .social-row a:hover {
@@ -542,6 +552,7 @@ a:hover {
 .mini-card h2 {
   margin: 0;
   font-size: 0.98rem;
+  font-weight: 680;
   letter-spacing: 0;
 }
 
@@ -549,7 +560,7 @@ a:hover {
 .section-title-row a {
   color: var(--accent-dark);
   font-size: 0.88rem;
-  font-weight: 760;
+  font-weight: 640;
   white-space: nowrap;
 }
 
@@ -586,16 +597,17 @@ a:hover {
 
 .panel h2 {
   margin: 0 0 22px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: clamp(2rem, 4vw, 2.5rem);
   line-height: 1.1;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
 .about-copy {
   max-width: 790px;
   color: var(--body-text);
-  font-size: 1.08rem;
+  font-size: 1.03rem;
 }
 
 .about-copy p {
@@ -651,7 +663,7 @@ code {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.34), transparent),
     var(--social-bg);
-  font-weight: 680;
+  font-weight: 560;
 }
 
 .skill-list li::before {
@@ -678,9 +690,10 @@ code {
 .publication-group h3 {
   margin: 0;
   color: var(--title);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: 1.28rem;
   line-height: 1.2;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
@@ -721,8 +734,9 @@ code {
 .publication-card h4 {
   margin: 0 0 10px;
   color: var(--title);
-  font-size: 1.16rem;
-  line-height: 1.25;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.32;
   letter-spacing: 0;
 }
 
@@ -772,7 +786,7 @@ code {
   border-radius: 999px;
   padding: 3px 11px;
   font-size: 0.82rem;
-  font-weight: 780;
+  font-weight: 650;
 }
 
 .tag {
@@ -806,7 +820,7 @@ code {
   position: relative;
   padding-left: 24px;
   color: var(--body-text);
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   line-height: 1.58;
 }
 
@@ -832,14 +846,14 @@ code {
 .resume-links a {
   color: var(--accent-dark);
   font-size: 0.92rem;
-  font-weight: 780;
+  font-weight: 640;
 }
 
 .resume-rank {
   display: inline-flex;
   margin-left: 8px;
   color: var(--accent-dark);
-  font-weight: 780;
+  font-weight: 640;
 }
 
 @media (prefers-reduced-motion: reduce) {
