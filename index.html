@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ruolin Zhu | Academic Homepage</title>
+    <meta
+      name="description"
+      content="Ruolin Zhu's academic homepage, including profile, research interests, publications, services, and curriculum vitae."
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div class="liquid liquid-a"></div>
+    <div class="liquid liquid-b"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#about" data-profile="name">Ruolin Zhu</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="active" href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#services">Services</a>
+      </nav>
+      <div class="header-tools" aria-label="Display tools">
+        <div class="language-switch" aria-label="Language switch">
+          <button class="active" type="button">EN</button>
+          <button type="button">中文</button>
+        </div>
+        <button class="icon-button" type="button" aria-label="Print CV" title="Print CV">
+          <span aria-hidden="true">▢</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Profile sidebar">
+        <section class="identity-card glass">
+          <img class="avatar" data-profile="avatar" src="assets/profile.png" alt="Portrait of Ruolin Zhu" />
+          <h1 data-profile="name">Ruolin Zhu</h1>
+          <p class="role" data-profile="role">Clinical Medicine</p>
+          <p class="affiliation" data-profile="affiliation">P.R. China</p>
+
+          <div class="social-row" aria-label="Academic links">
+            <a data-link="email" href="mailto:icqzhu@gmail.com" aria-label="Email" title="Email">
+              <span aria-hidden="true">✉</span>
+            </a>
+            <a data-link="orcid" href="https://orcid.org/0009-0007-1542-9888" aria-label="ORCID" title="ORCID">
+              <span aria-hidden="true">iD</span>
+            </a>
+            <a data-link="pubmed" href="https://www.ncbi.nlm.nih.gov/pubmed/?term=zhu+ruolin" aria-label="PubMed" title="PubMed">
+              <span aria-hidden="true">P</span>
+            </a>
+            <a data-link="github" href="#" aria-label="GitHub" title="GitHub">
+              <span aria-hidden="true">{ }</span>
+            </a>
+            <a data-link="cv" href="#" aria-label="CV" title="CV">
+              <span aria-hidden="true">CV</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="mini-card glass" id="research" aria-labelledby="research-title">
+          <div class="mini-card-head">
+            <h2 id="research-title">Research Interests</h2>
+            <a href="#about">View Details</a>
+          </div>
+          <ul id="interest-list">
+            <li>Clinical Medicine</li>
+            <li>Evidence & Publications</li>
+            <li>Academic Collaboration</li>
+          </ul>
+        </section>
+
+        <section class="mini-card glass">
+          <div class="mini-card-head">
+            <h2>Quick Links</h2>
+          </div>
+          <ul id="quick-links">
+            <li><a href="mailto:icqzhu@gmail.com">Email</a></li>
+            <li><a href="https://orcid.org/0009-0007-1542-9888">ORCID</a></li>
+            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=zhu+ruolin">PubMed</a></li>
+          </ul>
+        </section>
+      </aside>
+
+      <section class="content">
+        <section class="panel" id="about" aria-labelledby="about-title">
+          <h2 id="about-title">About</h2>
+          <div class="about-copy" id="about-content">
+            <p>
+              I am building an academic profile in clinical medicine. This page
+              is now powered by Markdown files in the <code>content</code>
+              folder, so future edits can stay focused on your academic content.
+            </p>
+          </div>
+        </section>
+
+        <section class="panel" id="publications" aria-labelledby="publications-title">
+          <div class="section-title-row">
+            <h2 id="publications-title">Selected Publications</h2>
+            <a href="content/publications.md">Edit Markdown →</a>
+          </div>
+          <div class="publication-list" id="publication-list" aria-live="polite">
+            <article class="publication-card glass">
+              <p class="loading">Loading publications from Markdown...</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="services" aria-labelledby="services-title">
+          <div class="section-title-row">
+            <h2 id="services-title">Services</h2>
+            <a href="content/services.md">Edit Markdown →</a>
+          </div>
+          <div class="service-grid" id="service-list">
+            <article class="service-card glass">
+              <h3>Academic Service</h3>
+              <p>Loading service items from Markdown...</p>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© <span id="year"></span> <span data-profile="name">Ruolin Zhu</span></span>
+      <span>Powered by editable Markdown content.</span>
+    </footer>
+
+    <script src="assets/main.js"></script>
+  </body>
+</html>
