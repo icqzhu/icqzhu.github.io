@@ -24,3 +24,4 @@ I welcome research discussions and collaborations. Please get in touch by email.
 - Protein Structure & Function
 - Evolutionary Mechanism
 - AI for Science
+- Algorithms & Program Design
