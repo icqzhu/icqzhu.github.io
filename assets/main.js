@@ -353,7 +353,10 @@ function buildPublicationCard(publication) {
 
   return `
     <article class="publication-card glass">
-      <h4>${publicationTitleToHtml(publication.title || "Untitled publication")}</h4>
+      <div class="publication-head">
+        <h4>${publicationTitleToHtml(publication.title || "Untitled publication")}</h4>
+        ${publication.year ? `<span class="publication-year">${escapeHtml(publication.year)}</span>` : ""}
+      </div>
       <p class="authors">${highlightName(publication.authors || "")}</p>
       <p class="venue">${escapeHtml(publication.venue || "")}</p>
       <div class="summary">${publication.summary || ""}</div>
