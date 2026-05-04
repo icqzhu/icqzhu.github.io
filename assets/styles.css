@@ -297,6 +297,9 @@ a:hover {
   min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
 }
 
@@ -307,6 +310,7 @@ a:hover {
 .nav a {
   flex: 0 0 auto;
   min-width: 0;
+  scroll-snap-align: start;
 }
 
 .home-link:hover,
@@ -1185,6 +1189,7 @@ code {
   .site-header {
     position: sticky;
     top: 8px;
+    display: flex;
     align-items: center;
     gap: 8px;
     padding: 8px 10px;
@@ -1198,10 +1203,20 @@ code {
     justify-content: flex-start;
     flex-wrap: nowrap;
     gap: 6px;
+    flex: 1 1 auto;
+    min-width: 0;
     width: 100%;
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 22px), transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 22px), transparent);
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
   .header-tools {
+    flex: 0 0 auto;
     justify-content: flex-end;
   }
 
