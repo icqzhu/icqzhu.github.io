@@ -243,9 +243,10 @@ a:hover {
   position: sticky;
   top: 12px;
   z-index: 20;
-  display: flex;
+  display: grid;
+  grid-template-columns: calc(var(--sidebar-width) - var(--header-pad-x)) minmax(0, 1fr) auto;
   align-items: center;
-  gap: 18px;
+  column-gap: var(--column-gap);
   width: min(var(--shell-width), calc(100% - 42px));
   min-height: 60px;
   margin: 12px auto 0;
@@ -286,14 +287,13 @@ a:hover {
 }
 
 .home-link {
-  flex: 0 0 auto;
+  justify-self: start;
 }
 
 .nav {
   display: flex;
   justify-content: flex-start;
   gap: var(--nav-gap);
-  flex: 1 1 auto;
   min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
@@ -515,7 +515,6 @@ a:hover {
   background: transparent;
   font: inherit;
   text-align: left;
-  text-decoration: none;
   transition:
     background 180ms ease,
     color 180ms ease,
@@ -523,9 +522,6 @@ a:hover {
 }
 
 .profile-contact button {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
   cursor: pointer;
 }
 
