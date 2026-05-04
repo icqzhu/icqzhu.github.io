@@ -425,6 +425,7 @@ a:hover {
 }
 
 .identity-card,
+.contact-card,
 .mini-card,
 .publication-card,
 .service-card,
@@ -439,6 +440,7 @@ a:hover {
 }
 
 .identity-card:hover,
+.contact-card:hover,
 .mini-card:hover,
 .publication-card:hover,
 .service-card:hover,
@@ -448,7 +450,7 @@ a:hover {
 }
 
 .identity-card {
-  padding: 0 0 28px;
+  padding: 0 0 24px;
   text-align: center;
   animation: fadeScaleIn 760ms 120ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
@@ -458,18 +460,36 @@ a:hover {
   z-index: 1;
 }
 
-.avatar {
+.avatar-frame {
+  position: relative;
+  overflow: hidden;
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  object-fit: cover;
   border-radius: var(--radius) var(--radius) 10px 10px;
   border-bottom: 1px solid var(--glass-border);
   animation: fadeScaleIn 900ms 180ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
+.avatar-frame::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  content: "";
+}
+
+.avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 .identity-card h1 {
-  margin: 24px 18px 12px;
+  margin: 24px 18px 16px;
   font-family: var(--font-sans);
   font-size: clamp(1.75rem, 3.2vw, 2.05rem);
   line-height: 1.12;
@@ -493,10 +513,20 @@ a:hover {
   color: var(--muted);
 }
 
+.contact-card {
+  padding: 20px;
+  animation: fadeScaleIn 760ms 180ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.contact-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 .profile-contact {
   display: grid;
   gap: 7px;
-  margin: 0 26px;
+  margin: 0;
   text-align: left;
 }
 
@@ -558,7 +588,7 @@ a:hover {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 22px;
+  margin-top: 16px;
 }
 
 .social-row a {
@@ -743,7 +773,7 @@ a:hover {
 }
 
 .panel + .panel {
-  margin-top: 42px;
+  margin-top: 54px;
 }
 
 .about-panel {
@@ -762,7 +792,7 @@ a:hover {
 
 .panel h2::after {
   display: block;
-  width: 48px;
+  width: 100%;
   height: 3px;
   margin-top: 12px;
   border-radius: 999px;
@@ -1060,6 +1090,30 @@ code {
   content: "";
 }
 
+.education-item {
+  display: grid;
+  gap: 3px;
+}
+
+.resume-list .education-item::before {
+  top: 0.52em;
+}
+
+.education-period {
+  display: block;
+  color: var(--accent-dark);
+  font-size: 0.92rem;
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.education-detail {
+  display: block;
+  color: var(--body-text);
+  font-size: 1rem;
+  line-height: 1.56;
+}
+
 .resume-links {
   display: inline-flex;
   flex-wrap: wrap;
@@ -1159,7 +1213,22 @@ code {
 
   .sidebar {
     grid-template-columns: minmax(240px, 320px) minmax(240px, 1fr);
+    grid-template-areas:
+      "identity research"
+      "identity contact";
     align-items: start;
+  }
+
+  .identity-card {
+    grid-area: identity;
+  }
+
+  #research {
+    grid-area: research;
+  }
+
+  .contact-card {
+    grid-area: contact;
   }
 }
 
@@ -1182,6 +1251,13 @@ code {
   .entry-grid,
   .skill-list {
     grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    grid-template-areas:
+      "identity"
+      "contact"
+      "research";
   }
 
   .home-link,

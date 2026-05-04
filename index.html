@@ -64,10 +64,15 @@
     <main class="layout">
       <aside class="sidebar" aria-label="Profile sidebar">
         <section class="identity-card glass">
-          <img class="avatar" data-profile="avatar" src="assets/yuanyuan.jpg" alt="Portrait of Ruolin Zhu" />
+          <div class="avatar-frame" data-protected-image oncontextmenu="return false">
+            <img class="avatar" data-profile="avatar" src="assets/yuanyuan.jpg" alt="Portrait of Ruolin Zhu" draggable="false" />
+          </div>
           <h1 data-profile="name">Ruolin Zhu</h1>
           <p class="role" data-profile="role">Clinical Medicine</p>
           <p class="affiliation" data-profile="affiliation">P.R. China</p>
+        </section>
+
+        <section class="contact-card glass" aria-label="Contact and academic links">
           <div class="profile-contact" aria-label="Contact information">
             <button class="profile-contact-copy" type="button" data-copy-email="icqzhu@gmail.com" aria-label="Copy email address">
               <span data-copy-label>Email</span>

@@ -103,6 +103,7 @@ const fallbackTalksInternships = [
 initThemeToggle();
 initNavigation();
 initCopyEmail();
+initProtectedImages();
 loadContent();
 
 async function loadContent() {
@@ -126,7 +127,7 @@ async function loadContent() {
   renderSkillList("#skills-expertise-list", skillsExpertise.length ? skillsExpertise : fallbackSkillsExpertise);
   renderPublications(publications.length ? publications : fallbackPublications);
   renderResumeList("#honors-awards-list", honorsAwards.length ? honorsAwards : fallbackHonorsAwards);
-  renderResumeList(
+  renderEducationList(
     "#education-talks-internships-list",
     educationTalksInternships.length
       ? educationTalksInternships
@@ -359,6 +360,13 @@ function initCopyEmail() {
   });
 }
 
+function initProtectedImages() {
+  document.querySelectorAll("[data-protected-image]").forEach((frame) => {
+    frame.addEventListener("contextmenu", (event) => event.preventDefault());
+    frame.addEventListener("dragstart", (event) => event.preventDefault());
+  });
+}
+
 function renderPublications(publications) {
   const sortedPublications = [...publications]
     .filter((publication) => !hasTemplateTag(publication))
@@ -494,6 +502,32 @@ function renderResumeList(selector, entries) {
         <li>
           <span>${parts.map((part) => escapeHtml(part)).join(", ")}</span>
           ${rank ? `<span class="resume-rank">${escapeHtml(rank)}</span>` : ""}
+          ${links ? `<span class="resume-links">${links}</span>` : ""}
+        </li>
+      `;
+    })
+    .join("");
+}
+
+function renderEducationList(selector, entries) {
+  document.querySelector(selector).innerHTML = entries
+    .sort((a, b) => getSortYear(b) - getSortYear(a))
+    .map((entry) => {
+      const period = entry.period || entry.date || entry.year || "";
+      const place = entry.institution || entry.organization || entry.venue || "";
+      const description = entry.description || entry.title || stripHtml(entry.summary || "");
+      const details = [place, description].filter(Boolean).join(", ");
+      const links = parseLinks(entry.links)
+        .map(
+          (link) =>
+            `<a href="${escapeHtml(link.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`,
+        )
+        .join("");
+
+      return `
+        <li class="education-item">
+          ${period ? `<span class="education-period">${escapeHtml(period)}</span>` : ""}
+          <span class="education-detail">${escapeHtml(details)}</span>
           ${links ? `<span class="resume-links">${links}</span>` : ""}
         </li>
       `;
