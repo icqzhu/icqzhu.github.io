@@ -102,6 +102,7 @@ const fallbackTalksInternships = [
 
 initThemeToggle();
 initNavigation();
+initCopyEmail();
 loadContent();
 
 async function loadContent() {
@@ -278,6 +279,8 @@ function renderProfile(profile) {
   });
   setText('[data-profile="role"]', profile.role);
   setText('[data-profile="affiliation"]', profile.affiliation);
+  setText('[data-profile="email"]', profile.email || fallbackProfile.email);
+  setText('[data-profile="orcid-id"]', formatOrcid(profile.orcid || fallbackProfile.orcid));
 
   const avatar = document.querySelector('[data-profile="avatar"]');
   avatar.src = profile.avatar || fallbackProfile.avatar;
@@ -302,11 +305,58 @@ function renderProfile(profile) {
     link.rel = "noopener noreferrer";
   });
 
+  setEmailCopy(profile.email || fallbackProfile.email);
+  setContactLink("orcid", profile.orcid);
+
   document.querySelector("#about-content").innerHTML =
     profile.about || markdownToHtml(fallbackProfile.about);
   document.querySelector("#interest-list").innerHTML = profile.interests
     .map((interest) => `<li>${escapeHtml(interest)}</li>`)
     .join("");
+}
+
+function setEmailCopy(email) {
+  const button = document.querySelector("[data-copy-email]");
+  if (!button) return;
+  button.dataset.copyEmail = email || "";
+  button.classList.toggle("is-hidden", !email);
+  button.setAttribute("aria-label", email ? `Copy email address ${email}` : "Copy email address");
+}
+
+function setContactLink(key, href) {
+  const link = document.querySelector(`[data-contact-link="${key}"]`);
+  if (!link) return;
+  link.href = href || "#";
+  link.classList.toggle("is-hidden", !href);
+}
+
+function formatOrcid(orcid) {
+  return String(orcid || "").replace(/^https?:\/\/orcid\.org\//i, "");
+}
+
+function initCopyEmail() {
+  const button = document.querySelector("[data-copy-email]");
+  if (!button) return;
+
+  button.addEventListener("click", async () => {
+    const email = button.dataset.copyEmail || "";
+    if (!email) return;
+
+    const label = button.querySelector("[data-copy-label]");
+    const originalLabel = label ? label.textContent : "";
+
+    try {
+      await navigator.clipboard.writeText(email);
+      if (label) label.textContent = "Copied";
+    } catch (error) {
+      console.warn("Could not copy email address.", error);
+      if (label) label.textContent = "Copy failed";
+    }
+
+    window.setTimeout(() => {
+      if (label) label.textContent = originalLabel || "Email";
+    }, 1400);
+  });
 }
 
 function renderPublications(publications) {

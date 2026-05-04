@@ -24,7 +24,7 @@ year: 2025
 authors: Zuguo Zhao; Caihong Ye; Wei Zhang; Xianghao Yuan; Han Gao; Ruolin Zhu et al.
 venue: Journal of Pharmaceutical and Biomedical Analysis
 category: Others
-tags: MD Simulation
+tags: Resistance, MD Simulation
 links: Article|https://doi.org/10.1016/j.jpba.2025.117272, PubMed|https://pubmed.ncbi.nlm.nih.gov/41319568/, Web of Science|https://webofscience.clarivate.cn/wos/woscc/full-record/WOS:001632331300001
 ---
 
