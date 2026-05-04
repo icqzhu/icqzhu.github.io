@@ -284,8 +284,7 @@ function renderProfile(profile) {
   setText('[data-profile="orcid-id"]', formatOrcid(profile.orcid || fallbackProfile.orcid));
 
   const avatar = document.querySelector('[data-profile="avatar"]');
-  avatar.src = profile.avatar || fallbackProfile.avatar;
-  avatar.alt = `Portrait of ${profile.name}`;
+  setAvatarImage(avatar, profile.avatar || fallbackProfile.avatar, `Portrait of ${profile.name}`);
 
   const linkMap = {
     email: profile.email ? `mailto:${profile.email}` : "",
@@ -322,6 +321,23 @@ function setEmailCopy(email) {
   button.dataset.copyEmail = email || "";
   button.classList.toggle("is-hidden", !email);
   button.setAttribute("aria-label", email ? `Copy email address ${email}` : "Copy email address");
+}
+
+function setAvatarImage(image, src, alt) {
+  if (!image) return;
+  image.classList.remove("is-loaded");
+  image.alt = alt;
+
+  const showImage = () => {
+    image.classList.add("is-loaded");
+  };
+
+  image.addEventListener("load", showImage, { once: true });
+  image.src = src;
+
+  if (image.complete) {
+    showImage();
+  }
 }
 
 function setContactLink(key, href) {

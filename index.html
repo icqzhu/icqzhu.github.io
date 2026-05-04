@@ -24,6 +24,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.5/css/academicons.min.css"
     />
+    <link rel="preload" as="image" href="assets/profile.png" fetchpriority="high" />
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
@@ -65,7 +66,15 @@
       <aside class="sidebar" aria-label="Profile sidebar">
         <section class="identity-card glass">
           <div class="avatar-frame" data-protected-image oncontextmenu="return false">
-            <img class="avatar" data-profile="avatar" src="assets/yuanyuan.jpg" alt="Portrait of Ruolin Zhu" draggable="false" />
+            <img
+              class="avatar"
+              data-profile="avatar"
+              src="assets/profile.png"
+              alt="Portrait of Ruolin Zhu"
+              draggable="false"
+              decoding="async"
+              fetchpriority="high"
+            />
           </div>
           <h1 data-profile="name">Ruolin Zhu</h1>
           <p class="role" data-profile="role">Clinical Medicine</p>
