@@ -243,10 +243,9 @@ a:hover {
   position: sticky;
   top: 12px;
   z-index: 20;
-  display: grid;
-  grid-template-columns: calc(var(--sidebar-width) - var(--header-pad-x)) minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
-  column-gap: var(--column-gap);
+  gap: 18px;
   width: min(var(--shell-width), calc(100% - 42px));
   min-height: 60px;
   margin: 12px auto 0;
@@ -287,13 +286,14 @@ a:hover {
 }
 
 .home-link {
-  justify-self: start;
+  flex: 0 0 auto;
 }
 
 .nav {
   display: flex;
   justify-content: flex-start;
   gap: var(--nav-gap);
+  flex: 1 1 auto;
   min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
@@ -515,6 +515,7 @@ a:hover {
   background: transparent;
   font: inherit;
   text-align: left;
+  text-decoration: none;
   transition:
     background 180ms ease,
     color 180ms ease,
@@ -522,6 +523,9 @@ a:hover {
 }
 
 .profile-contact button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
   cursor: pointer;
 }
 
@@ -1131,15 +1135,13 @@ code {
   .site-header {
     position: sticky;
     top: 8px;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    justify-items: stretch;
     align-items: center;
-    column-gap: 8px;
+    gap: 8px;
     padding: 8px 10px;
   }
 
   .home-link {
-    justify-self: start;
+    flex: 0 0 auto;
   }
 
   .nav {
